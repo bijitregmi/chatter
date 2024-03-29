@@ -1,5 +1,5 @@
-from django.db import models
 from account.models import Account
+from django.db import models
 
 
 # Create your models here.
@@ -19,11 +19,11 @@ class Server(models.Model):
         related_name="server_owner",
         null=True,
     )
-    catergory = models.ForeignKey(
+    category = models.ForeignKey(
         Category, on_delete=models.SET_NULL, related_name="server_category", null=True
     )
     description = models.CharField(max_length=256, blank=True)
-    member = models.ManyToManyField(Account, related_name="server_memeber", blank=True)
+    member = models.ManyToManyField(Account, related_name="server_member", blank=True)
 
     def __str__(self):
         return self.name
