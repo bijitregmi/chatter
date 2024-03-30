@@ -1,14 +1,51 @@
 from account.models import Account
 from django.db import models
+from django.dispatch import receiver
+from django.shortcuts import get_object_or_404
+
+from .validators import validate_icon_image_size, validate_image_file_extension
 
 
 # Create your models here.
+def category_icon_upload_path(instance, filename):
+    return f"category/{instance.id}/icon/{filename}"
+
+
+def server_banner_upload_path(instance, filename):
+    return f"server/{instance.id}/banner/{filename}"
+
+
+def server_icon_upload_path(instance, filename):
+    return f"server/{instance.id}/icon/{filename}"
+
+
 class Category(models.Model):
     name = models.CharField(max_length=64)
     description = models.TextField(blank=True)
+    icon = models.FileField(
+        upload_to=category_icon_upload_path,
+        blank=True,
+        null=True,
+        validators=[validate_icon_image_size, validate_image_file_extension],
+    )
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if self.id:
+            exists = get_object_or_404(Category, id=self.id)
+            if exists.icon != self.icon:
+                exists.icon.delete(save=False)
+        super(Category, self).save(*args, **kwargs)
+
+    @receiver(models.signals.pre_delete, sender="server.Category")
+    def category_delete_files(sender, instance, **kwargs):
+        for field in instance._meta.fields:
+            if field.name == "icon":
+                file = getattr(instance, field.name)
+                if file:
+                    file.delete(save=False)
 
 
 class Server(models.Model):
@@ -24,9 +61,38 @@ class Server(models.Model):
     )
     description = models.CharField(max_length=256, blank=True)
     member = models.ManyToManyField(Account, related_name="server_member", blank=True)
+    banner = models.ImageField(
+        upload_to=server_banner_upload_path,
+        blank=True,
+        null=True,
+        validators=[validate_image_file_extension],
+    )
+    icon = models.ImageField(
+        upload_to=server_icon_upload_path,
+        blank=True,
+        null=True,
+        validators=[validate_icon_image_size, validate_image_file_extension],
+    )
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if self.id:
+            exists = get_object_or_404(Server, id=self.id)
+            if exists.icon != self.icon:
+                exists.icon.delete(save=False)
+            if exists.banner != self.banner:
+                exists.banner.delete(save=False)
+        super(Server, self).save(*args, **kwargs)
+
+    @receiver(models.signals.pre_delete, sender="server.Server")
+    def category_delete_files(sender, instance, **kwargs):
+        for field in instance._meta.fields:
+            if field.name == "icon" or field.name == "banner":
+                file = getattr(instance, field.name)
+                if file:
+                    file.delete(save=False)
 
 
 class Channel(models.Model):
