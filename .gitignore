@@ -1,5 +1,6 @@
 venv/
 djangochat/.env
 djangochat/db.sqlite3
+djangochat/schema.yml
 __pycache__
 .vscode/

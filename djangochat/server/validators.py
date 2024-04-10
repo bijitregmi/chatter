@@ -15,6 +15,20 @@ def validate_icon_image_size(image):
 
 def validate_image_file_extension(value):
     ext = os.path.splitext(value.name)[1]
-    valid_extension = [".jpg", ".jpeg", ".png", ".png"]
+    valid_extension = [
+        ".jpg",
+        ".jpeg",
+        ".png",
+        ".svg",
+    ]
     if ext.lower() not in valid_extension:
         raise ValidationError(f"Unsupported file extension")
+
+
+def validate_svg_file_extension(value):
+    ext = os.path.splitext(value.name)[1]
+    valid_extension = [
+        ".svg",
+    ]
+    if ext.lower() not in valid_extension:
+        raise ValidationError("Only svg file extension allowed")

@@ -1,11 +1,23 @@
 from django.db.models import Count
+from drf_spectacular.utils import extend_schema
 from rest_framework import viewsets
 from rest_framework.exceptions import AuthenticationFailed, ParseError, ValidationError
 from rest_framework.response import Response
 
-from .models import Server
+from .models import Category, Server
 from .schema import server_list_docs
-from .serializers import ServerSerializers
+from .serializers import CategorySerializer, ServerSerializers
+
+
+class CategoryListViewSet(viewsets.ViewSet):
+
+    queryset = Category.objects.all()
+
+    @extend_schema(responses=CategorySerializer(many=True))
+    def list(self, request):
+        self.queryset = self.queryset.order_by("name")
+        serialzer = CategorySerializer(self.queryset, many=True)
+        return Response(serialzer.data)
 
 
 # Create your views here.
@@ -42,8 +54,8 @@ class ServerListViewSet(viewsets.ViewSet):
         by_user = request.query_params.get("by_user")
         server_id = request.query_params.get("server_id")
 
-        if not request.user.is_authenticated:
-            raise AuthenticationFailed()
+        # if not request.user.is_authenticated:
+        #     raise AuthenticationFailed()
 
         # Filter by categories
         if category:
@@ -73,5 +85,6 @@ class ServerListViewSet(viewsets.ViewSet):
         if qty:
             self.queryset = self.queryset[: int(qty)]
 
+        self.queryset = self.queryset.order_by("name")
         serializer = ServerSerializers(self.queryset, many=True)
         return Response(serializer.data)

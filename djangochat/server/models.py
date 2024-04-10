@@ -3,7 +3,11 @@ from django.db import models
 from django.dispatch import receiver
 from django.shortcuts import get_object_or_404
 
-from .validators import validate_icon_image_size, validate_image_file_extension
+from .validators import (
+    validate_icon_image_size,
+    validate_image_file_extension,
+    validate_svg_file_extension,
+)
 
 
 # Create your models here.
@@ -26,7 +30,7 @@ class Category(models.Model):
         upload_to=category_icon_upload_path,
         blank=True,
         null=True,
-        validators=[validate_icon_image_size, validate_image_file_extension],
+        validators=[validate_svg_file_extension],
     )
 
     def __str__(self):
@@ -37,7 +41,15 @@ class Category(models.Model):
             exists = get_object_or_404(Category, id=self.id)
             if exists.icon != self.icon:
                 exists.icon.delete(save=False)
-        super(Category, self).save(*args, **kwargs)
+            self.name = self.name.lower()
+            super(Category, self).save(*args, **kwargs)
+
+        else:
+            saved_image = self.icon
+            self.icon = None
+            super(Category, self).save(*args, **kwargs)
+            self.icon = saved_image
+            self.save()
 
     @receiver(models.signals.pre_delete, sender="server.Category")
     def category_delete_files(sender, instance, **kwargs):
@@ -84,7 +96,16 @@ class Server(models.Model):
                 exists.icon.delete(save=False)
             if exists.banner != self.banner:
                 exists.banner.delete(save=False)
-        super(Server, self).save(*args, **kwargs)
+            super(Server, self).save(*args, **kwargs)
+        else:
+            saved_icon = self.icon
+            saved_banner = self.banner
+            self.icon = None
+            self.banner = None
+            super(Server, self).save(*args, **kwargs)
+            self.icon = saved_icon
+            self.banner = saved_banner
+            self.save()
 
     @receiver(models.signals.pre_delete, sender="server.Server")
     def category_delete_files(sender, instance, **kwargs):
