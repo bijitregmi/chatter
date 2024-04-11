@@ -27,7 +27,7 @@ function App() {
 
   
   const theme = Theme()
-  const [mode, setMode] = React.useState(theme.palette.mode)
+  const [mode, setMode] = React.useState(() => localStorage.getItem('colorMode') || theme.palette.mode)
   const modifiedTheme = React.useMemo(() => createTheme({
     ...theme,
     palette: {
@@ -35,9 +35,13 @@ function App() {
     },
   }), [mode])
 
-  const toggleMode = () => {
-    mode === "dark" ? setMode("light") : setMode("dark")
-  }
+  const toggleMode = React.useCallback(() => {
+    setMode(prevMode => (prevMode === "light" ? "dark" : "light"))
+  }, [mode])
+
+  React.useEffect(() => {
+    localStorage.setItem('colorMode', mode)
+  }, [mode])
 
     return (
       <ThemeContext.Provider value={{toggleMode}}>

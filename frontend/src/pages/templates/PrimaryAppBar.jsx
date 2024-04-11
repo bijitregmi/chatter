@@ -3,19 +3,17 @@ import React from 'react'
 import { useTheme } from '@mui/material'
 import { Link } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
-import Brightness7Icon from '@mui/icons-material/Brightness7'
-import Brightness4Icon from '@mui/icons-material/Brightness4'
-import { ThemeContext } from '../../App'
+import ExploreCategories from '../../components/SecondaryDrawer/ExploreCategories'
+import AccountButton from '../../components/PrimaryAppBar/AccountButton'
 
 
 const PrimaryAppBar = () => {
   const theme = useTheme()
-  const { toggleMode } = React.useContext(ThemeContext)
   const [sideMenuOpen, setSideMenuOpen] = React.useState(false)
   const isScreenSizeSmall = useMediaQuery(theme.breakpoints.down("sm"))
-  const toggleSideMenu = () => {
+  const toggleSideMenu = React.useCallback(() => {
     return setSideMenuOpen(prevSideMenuOpen => !prevSideMenuOpen)
-  }
+  }, [])
 
 
   React.useEffect(() => {
@@ -28,7 +26,10 @@ const PrimaryAppBar = () => {
     <AppBar color='inherit' position='fixed' sx={{
       height: theme.primaryAppBar.height,
       zIndex: theme.zIndex.drawer + 2,
-      transition: '0.2s'
+      transition: '0.2s',
+      boxShadow: "none",
+      borderBottom: `1px solid ${theme.palette.divider}`,
+      bgcolor: theme.palette.mode == "dark" ? '#242424' : "#F7F7F7",
       }}>
         <Toolbar variant='dense'
           sx={{
@@ -44,13 +45,14 @@ const PrimaryAppBar = () => {
             <IconButton color='inherit' aria-label='open drawer button' edge="start" sx={{ mr: 1}} onClick={toggleSideMenu}>
               <MenuIcon/>
             </IconButton>
-            <Drawer anchor='left' open={sideMenuOpen}>
-            {[...Array(100)].map((_, i) => (
-              <Typography key={i} paragraph>
-                {i + 1}
-              </Typography>
-            ))}
-          </Drawer>
+            <Drawer anchor='left' open={sideMenuOpen} onClose={() => setSideMenuOpen(false)}>
+              <Box 
+                sx={{ width: `${theme.secondaryDrawer.width}px` , mt: `${theme.primaryAppBar.height}px`}}
+                role="presentation" 
+                onClick={() => setSideMenuOpen(false)}>
+                <ExploreCategories/>
+              </Box>
+            </Drawer>
           </Box>
           <Link href="/" underline="none" color="inherit">
             <Typography 
@@ -65,9 +67,7 @@ const PrimaryAppBar = () => {
             </Typography>
           </Link>
           </Box>
-          <IconButton onClick={() => toggleMode()}>
-              {theme.palette.mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
-          </IconButton>
+          <AccountButton/>
         </Toolbar>
     </AppBar>
   )

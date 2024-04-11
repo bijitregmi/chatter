@@ -18,7 +18,7 @@ const ExploreServers = () => {
 
     return (
         <Container maxWidth="1000px" disableGutters sx={{
-            px: {md: 8, sm: 4, xs: 4}
+            px: {md: 8, sm: 4, xs: 2}
         }}>
             <Box sx={{
                 pt: 3,
@@ -54,7 +54,8 @@ const ExploreServers = () => {
             >
                 <Typography
                 variant='h6' 
-                noWrap component="h2" 
+                noWrap 
+                component="h2" 
                 color={theme.palette.text.primary}
                 sx={{
                     display: {
@@ -89,7 +90,10 @@ const ExploreServers = () => {
                                     display: "flex",
                                     flexDirection: "column",
                                     borderRadius: 1,
-                                    justifyContent: "space-evenly"
+                                    '&:hover': {
+                                        cursor: "pointer",
+                                        bgcolor: theme.palette.action.hover
+                                    }
                                 }}>
                                     <CardMedia 
                                     component="img" 
@@ -99,14 +103,17 @@ const ExploreServers = () => {
                                     }
                                     sx={{
                                         display: {xs: "none", sm: "block"},
-                                        height: "60%",
+                                        height: "70%",
                                         width: "100%",
                                         borderRadius: 2,
                                     }}
                                     />
                                     <CardContent sx={{
-                                        p: 0,
                                         "&:last-child": {paddingBottom: 0},
+                                        p: '0.5dvw',
+                                        flexGrow: 1,
+                                        display: "flex",
+                                        alignItems: "center",
                                     }}>
                                         <List>
                                             <ListItem disablePadding>
@@ -142,10 +149,11 @@ const ExploreServers = () => {
                                                                 textOverflow: "ellipsis",
                                                                 whiteSpace: "nowrap",
                                                                 overflow: "hidden",
-                                                                color: theme.palette.text.secondary
+                                                                color: theme.palette.text.secondary,
+                                                                textTransform: "capitalize"
                                                             }}
                                                         >
-                                                            {item.category?.name.charAt(0).toUpperCase() + item.category?.name.slice(1)}
+                                                            {item.category?.name}
                                                         </Typography>
                                                     }
                                                 />

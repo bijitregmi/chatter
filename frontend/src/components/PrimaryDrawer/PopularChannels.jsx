@@ -60,6 +60,7 @@ const PopularChannels = (props) => {
                                                 fontWeight: 700,
                                                 textOverflow: "ellipsis",
                                                 whiteSpace: "nowrap",
+                                                textTransform: "capitalize"
                                             }} 
                                             >
                                                 {item.name}
@@ -75,10 +76,11 @@ const PopularChannels = (props) => {
                                                     textOverflow: "ellipsis",
                                                     whiteSpace: "nowrap",
                                                     color: "grey",
-                                                    pt: 0.5
+                                                    pt: 0.5,
+                                                    textTransform: "capitalize"
                                                 }}
                                             >
-                                                {item.category?.name.charAt(0).toUpperCase() + item.category?.name.slice(1)}
+                                                {item.category?.name}
                                             </Typography>
                                         }
 

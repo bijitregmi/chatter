@@ -14,7 +14,7 @@ const SecondaryDrawer = () => {
                 borderRight: `1px solid ${theme.palette.divider}`,
                 display: {xs: "none", sm: "block"},
                 overflow: "auto",
-                bgcolor: theme.palette.mode == "dark" ? '#242424' : theme.palette.background.default,
+                bgcolor: theme.palette.mode == "dark" ? '#242424' : "#F7F7F7",
                 transition: '0.2s'
             }}>
                 <ExploreCategories />

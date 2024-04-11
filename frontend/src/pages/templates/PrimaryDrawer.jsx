@@ -7,12 +7,12 @@ import PopularChannels from '../../components/PrimaryDrawer/PopularChannels'
 const PrimaryDrawer = () => {
 
     const theme = useTheme()
-    const isScreenSmall = useMediaQuery("(max-width: 1199px)")
-    const [isOpen, setIsOpen] = React.useState(!isScreenSmall)
+    const isScreenSmall = useMediaQuery("(max-width: 800px)")
+    const [isOpen, setIsOpen] = React.useState(true)
 
-    const toggleDrawer = () => {
+    const toggleDrawer = React.useCallback(() => {
         setIsOpen(!isOpen)
-    }
+    }, [isOpen])
 
     React.useEffect(() => {
         setIsOpen(!isScreenSmall)

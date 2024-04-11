@@ -91,9 +91,10 @@ const ExploreCategories = () => {
                                                 textOverflow: "ellipsis",
                                                 whiteSpace: "nowrap",
                                                 letterSpacing: "-0.5px",
+                                                textTransform: "capitalize"
                                             }}
                                         >
-                                            {item.name.charAt(0).toUpperCase() + item.name.slice(1)}
+                                            {item.name}
                                         </Typography>
                                     }
                                 />
