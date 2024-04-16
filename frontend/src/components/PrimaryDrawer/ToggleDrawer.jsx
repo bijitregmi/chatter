@@ -7,7 +7,7 @@ const ToggleDrawer = (props) => {
     return (
         <Box
         sx={{
-            display: "flex",
+            display: {xs: "none", sm: "flex"},
             height: "50px",
             alignItems: "center",
             justifyContent: props.isOpen ? "space-between" : "center",

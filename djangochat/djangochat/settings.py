@@ -16,7 +16,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG")
+DEBUG = os.environ.get("DEBUG", True) == "True"
 
 ALLOWED_HOSTS = []
 
@@ -33,10 +33,12 @@ INSTALLED_APPS = [
     # Internal
     "account",
     "server",
+    "webchat",
     # External
     "rest_framework",
     "drf_spectacular",
     "corsheaders",
+    "django_extensions",
 ]
 
 MIDDLEWARE = [
@@ -116,6 +118,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
 STATIC_URL = "static/"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
@@ -151,3 +155,7 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+CHANNEL_LAYERS = {
+    "default": {"BACKEND": "channels.layers.InMemoryChannelLayer"},
+}

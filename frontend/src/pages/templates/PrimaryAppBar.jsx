@@ -7,7 +7,7 @@ import ExploreCategories from '../../components/SecondaryDrawer/ExploreCategorie
 import AccountButton from '../../components/PrimaryAppBar/AccountButton'
 
 
-const PrimaryAppBar = () => {
+const PrimaryAppBar = ({children}) => {
   const theme = useTheme()
   const [sideMenuOpen, setSideMenuOpen] = React.useState(false)
   const isScreenSizeSmall = useMediaQuery(theme.breakpoints.down("sm"))
@@ -32,9 +32,11 @@ const PrimaryAppBar = () => {
       bgcolor: theme.palette.mode == "dark" ? '#242424' : "#F7F7F7",
       }}>
         <Toolbar variant='dense'
+          disableGutters
           sx={{
             display: "flex",
             justifyContent: "space-between",
+            pl: {xs: 1.5, sm: 2, md: 3}
           }}
         >
           <Box sx={{
@@ -50,7 +52,7 @@ const PrimaryAppBar = () => {
                 sx={{ width: `${theme.secondaryDrawer.width}px` , mt: `${theme.primaryAppBar.height}px`}}
                 role="presentation" 
                 onClick={() => setSideMenuOpen(false)}>
-                <ExploreCategories/>
+                {children}
               </Box>
             </Drawer>
           </Box>

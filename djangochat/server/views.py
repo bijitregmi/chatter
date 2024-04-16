@@ -71,8 +71,9 @@ class ServerListViewSet(viewsets.ViewSet):
         # Filter by server id
         if server_id:
             try:
+                int(server_id)
                 self.queryset = self.queryset.filter(id=server_id)
-                if self.queryset is None:
+                if not self.queryset:
                     raise ValidationError(
                         detail=f"Server with id:{server_id} does not exist"
                     )

@@ -1,21 +1,27 @@
 import {createBrowserRouter, Route, RouterProvider, createRoutesFromElements} from "react-router-dom"
 import React from "react";
 import Home from "./pages/Home";
-import Explore from "./pages/Explore";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Theme from "./theme/Theme";
+import Main from "./pages/templates/Main";
+import Server from "./pages/Server";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
       <Route 
-        index
+        path="/"
         element={<Home/>}
-      />
-      <Route
-        exact
-        path="/category/:categoryName"
-        element={<Explore />}
+      >
+        <Route
+          exact
+          path="/category/:categoryName?"
+          element={<Main />}
+        />
+      </Route>
+      <Route 
+        path="/server/:serverId/:channelId?"
+        element={<Server/>}
       />
     </Route>
   )

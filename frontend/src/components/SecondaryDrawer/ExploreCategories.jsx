@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, List, ListItem, ListItemButton, ListItemAvatar, ListItemIcon, Avatar, ListItemText, Typography} from '@mui/material'
+import { Box, List, ListItem, ListItemButton, ListItemAvatar, ListItemIcon, ListItemText, Typography} from '@mui/material'
 import useCrud from '../../hooks/useCrud'
 import { Link } from 'react-router-dom'
 import { MEDIA_URL } from '../../config'
@@ -8,19 +8,16 @@ import { useTheme } from '@mui/material/styles'
 
 const ExploreCategories = () => {
 
-    const { dataCrud, error, isLoading, fetchData } = useCrud([], "/category/select/")
+    const { dataCrud, fetchData } = useCrud([], "/category/select/")
     const theme = useTheme()
 
     React.useEffect(() => {
         fetchData();
     }, [])
 
-    React.useEffect(() => {
-        console.log(dataCrud)
-    }, [dataCrud])
 
     return (
-        <>
+        <Box>
             <Box sx={{
                 height: "50px",
                 display: "flex",
@@ -37,7 +34,7 @@ const ExploreCategories = () => {
             <List sx={{
                 display: "block",
             }}>
-                {dataCrud.map(item => {
+                {(dataCrud || []).map(item => {
                     return (
                     <ListItem
                         key={item.id}
@@ -104,8 +101,7 @@ const ExploreCategories = () => {
                     )
                 })}
             </List>
-        </>
-
+        </Box>
     )
 }
 

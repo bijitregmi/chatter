@@ -1,7 +1,7 @@
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import OpenApiParameter, extend_schema
 
-from .serializers import ChannelSerializer, ServerSerializers
+from .serializers import ServerSerializers
 
 server_list_docs = extend_schema(
     responses=ServerSerializers(many=True),

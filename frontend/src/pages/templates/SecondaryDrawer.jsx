@@ -1,9 +1,8 @@
-import { Box, Typography } from '@mui/material'
+import { Box } from '@mui/material'
 import React from 'react'
 import { useTheme } from '@mui/material/styles'
-import ExploreCategories from '../../components/SecondaryDrawer/ExploreCategories'
 
-const SecondaryDrawer = () => {
+const SecondaryDrawer = ({children}) => {
     const theme = useTheme()
 
     return (
@@ -17,7 +16,7 @@ const SecondaryDrawer = () => {
                 bgcolor: theme.palette.mode == "dark" ? '#242424' : "#F7F7F7",
                 transition: '0.2s'
             }}>
-                <ExploreCategories />
+                {children}
             </Box>
     )
 }

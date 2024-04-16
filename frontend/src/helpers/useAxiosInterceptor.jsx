@@ -18,7 +18,7 @@ const useAxiosInterceptor = () => {
             const originalRequest = error.config;
             if (error.response?.status === 403) {
                 const goRoot = () => navigate('/test')
-                goRoot()
+                goRoot();
             }
             throw error
         }

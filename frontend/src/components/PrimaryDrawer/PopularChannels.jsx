@@ -12,12 +12,7 @@ const PopularChannels = (props) => {
         fetchData();
     }, [])
 
-    React.useEffect(() => {
-        console.log(dataCrud)
-    }, [dataCrud])
-
     return (
-        <>
             <List>
                 {dataCrud.map(item => {
                     return (
@@ -71,6 +66,7 @@ const PopularChannels = (props) => {
                                             <Typography
                                                 variant='body2'
                                                 sx={{
+                                                    fontSize: '0.8rem',
                                                     fontWeight: 500,
                                                     lineHeight: 0.8,
                                                     textOverflow: "ellipsis",
@@ -94,7 +90,6 @@ const PopularChannels = (props) => {
                     )
                 })}
             </List>
-        </>
     )
 }
 

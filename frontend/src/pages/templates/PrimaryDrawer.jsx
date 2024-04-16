@@ -1,26 +1,28 @@
-import { Box, Drawer, useMediaQuery, Typography } from '@mui/material'
+import { Box, Drawer, useMediaQuery } from '@mui/material'
 import React from 'react'
 import { useTheme } from '@mui/material/styles'
 import ToggleDrawer from '../../components/PrimaryDrawer/ToggleDrawer'
-import PopularChannels from '../../components/PrimaryDrawer/PopularChannels'
 
-const PrimaryDrawer = () => {
+const PrimaryDrawer = ({children}) => {
 
     const theme = useTheme()
-    const isScreenSmall = useMediaQuery("(max-width: 800px)")
-    const [isOpen, setIsOpen] = React.useState(true)
+    const [isOpen, setIsOpen] = React.useState(false)
+    const smallScreen = useMediaQuery(theme.breakpoints.down("sm"))
 
     const toggleDrawer = React.useCallback(() => {
         setIsOpen(!isOpen)
     }, [isOpen])
 
     React.useEffect(() => {
-        setIsOpen(!isScreenSmall)
-    }, [isScreenSmall])
+        if(smallScreen){
+            setIsOpen(false)
+        }
+    }, [smallScreen])
 
     return (
         <Drawer
         open={isOpen} 
+        onClose={() => setIsOpen(false)}
         variant='permanent'
         sx={{
             width: isOpen ? `${theme.primaryDrawer.width}px` : `${theme.primaryDrawer.closedWidth}px`,
@@ -37,13 +39,11 @@ const PrimaryDrawer = () => {
         }}
         >
                 <Box>
-                    <ToggleDrawer 
+                    <ToggleDrawer
                     toggleDrawer={toggleDrawer}
                     isOpen={isOpen}
                     />
-                    <PopularChannels 
-                    isOpen={isOpen}
-                    />
+                    {React.isValidElement(children) ? React.cloneElement(children, {isOpen}) : children}
                 </Box>
         </Drawer>
     )

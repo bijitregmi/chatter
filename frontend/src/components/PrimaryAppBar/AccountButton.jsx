@@ -21,15 +21,28 @@ const AccountButton = () => {
     }
 
     const menu = (
-        <Menu open={open} anchorEl={anchorEl} onClose={handleClose} sx={{
-            mt: 0.85,
-        }}>
+        <Menu 
+            open={open} 
+            anchorEl={anchorEl} 
+            onClose={handleClose} 
+            sx={{
+                mt: 0.85,
+                ml: 2,
+            }}
+        >
             <MenuItem sx={{
-                textTransform: "capitalize",
                 display: "flex",
-                justifyContent: "center" ,
+                gap: 2
             }}>
-                
+                <Box>
+                    Theme
+                </Box>
+                <Box sx={{
+                    textTransform: "capitalize",
+                    display: "flex",
+                    justifyContent: "center" ,
+                    alignItems: "center"
+                }}>
                     <Brightness7Icon /> 
                         <Switch 
                             checked={theme.palette.mode === "dark" ? true : false }
@@ -37,6 +50,7 @@ const AccountButton = () => {
                             color = "default"
                         />
                     <Brightness4Icon />
+                </Box>
             </MenuItem>
         </Menu>
     )
