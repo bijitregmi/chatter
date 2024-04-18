@@ -1,9 +1,8 @@
-import { AppBar, Box, Drawer, IconButton, Toolbar, Typography, useMediaQuery, Switch} from '@mui/material'
+import { AppBar, Box, Drawer, IconButton, Toolbar, Typography, useMediaQuery} from '@mui/material'
 import React from 'react'
 import { useTheme } from '@mui/material'
 import { Link } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
-import ExploreCategories from '../../components/SecondaryDrawer/ExploreCategories'
 import AccountButton from '../../components/PrimaryAppBar/AccountButton'
 
 

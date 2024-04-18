@@ -48,7 +48,6 @@ const Server = () => {
         <Box sx={{
         display: "flex"
         }}>
-        <CssBaseline enableColorScheme />
         <PrimaryAppBar>
             <ServerChannels dataCrud={dataCrud}/>
         </PrimaryAppBar>

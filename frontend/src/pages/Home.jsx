@@ -13,7 +13,6 @@ const Home = () => {
     <Box sx={{
       display: "flex"
     }}>
-      <CssBaseline enableColorScheme />
       <PrimaryAppBar>
         <ExploreCategories />
       </PrimaryAppBar>

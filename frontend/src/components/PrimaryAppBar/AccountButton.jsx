@@ -48,6 +48,7 @@ const AccountButton = () => {
                             checked={theme.palette.mode === "dark" ? true : false }
                             onClick={() => toggleMode()}
                             color = "default"
+                            id = "theme-switch"
                         />
                     <Brightness4Icon />
                 </Box>

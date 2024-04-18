@@ -2,9 +2,11 @@ import React from 'react'
 import { useParams, Link } from 'react-router-dom'
 import useWebSocket from 'react-use-websocket'
 import useCrud from '../../hooks/useCrud'
-import { AppBar, Box, IconButton, Menu, MenuItem, Toolbar, Typography } from '@mui/material'
+import { AppBar, Box, IconButton, ListItem, Menu, MenuItem, Toolbar, Typography, useMediaQuery, List, ListItemAvatar, Avatar, ListItemText, TextField, Button} from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
+import SendIcon from '@mui/icons-material/Send'
+import { format, parseISO } from 'date-fns'
 
 const MessageInterface = (props) => {
 
@@ -24,6 +26,22 @@ const MessageInterface = (props) => {
     const handleClose = () => {
         setAnchorEl(null)
     }
+    const isSmall = useMediaQuery(theme.breakpoints.down('sm'))
+    const messageEndRef = React.useRef(null)
+    const scrollToBottom = () => {
+        messageEndRef.current?.scrollIntoView({ behaviour: "smooth"})
+    }
+
+    React.useEffect(() => {
+        if (!isSmall) {
+            setAnchorEl(null)
+        }
+    }, [isSmall])
+
+    React.useEffect(() => {
+        scrollToBottom();
+    }, [newMessage])
+
     const menu = (
         <Menu
             open={open}
@@ -127,7 +145,11 @@ const MessageInterface = (props) => {
 
 
     return (
-        <>
+        <Box sx={{
+            minHeight: '100%',
+            display: 'flex',
+            flexDirection: 'column'
+        }}>
             <AppBar
                 sx={{
                     bgcolor: theme.palette.background.default,
@@ -166,35 +188,132 @@ const MessageInterface = (props) => {
             </AppBar>
         {channelId ?
         <>
-            <Box>
+            <Box sx={{
+                overflow: 'hidden',
+                flexGrow: 1,
+            }}>
+                <List sx={{
+                    width: '100%',
+                    bgcolor: 'background.paper',
+                }}>
                 {newMessage?.map((message, index) => {
                     return (
-                        <div key={message.id}>
-                            <p>{message.sender.username}</p>
-                            <p>{message.content}</p>
-                            <p></p>
-                        </div>
+                        <ListItem 
+                            key={message.id}
+                            sx={{
+                                gap: 2
+                            }}
+                        >
+                            <ListItemAvatar>
+                                <Avatar alt='User image'/>
+                            </ListItemAvatar>
+                            <ListItemText
+                                sx={{
+                                    display: 'grid'
+                                }}
+                                primary={
+                                <Typography
+                                    component='span'
+                                    variant='body1'
+                                    color={theme.palette.text.secondary}
+                                    noWrap
+                                    sx={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        fontWeight: 400,
+                                        gap: '1vw',
+                                        textOverflow: 'ellipsis'
+                                    }}
+                                >
+                                    <Typography sx={{
+                                        fontSize: '14px',
+                                    }}>
+                                        {message.sender.username}
+                                    </Typography>
+                                    <Typography sx={{
+                                        fontSize: '11px',
+                                    }}>
+                                        {format(parseISO(message.created_at), 'dd/MM/yyyy h:mm a')}
+                                    </Typography>
+                                </Typography>
+                                }
+
+                                secondary={
+                                    <Typography
+                                        variant='body2'
+                                        color={theme.palette.text.primary}
+                                        style={{
+                                            overflow: 'visible',
+                                            whiteSpace: 'normal',
+                                            textOverflow: 'clip',
+                                        }}
+                                        sx={{
+                                            display: 'inline',
+                                            lineHeight: '1.2',
+                                            fontWeight: 400,
+                                            letterSpacing: '-0.2px',
+                                            fontSize: '16px'
+                                        }}
+                                    >
+                                        {message.content}
+                                    </Typography>
+                                }
+                            />
+                        </ListItem>
                     )
-                })}
-                <form onSubmit={(e) => e.preventDefault()}>
-                    <label htmlFor="message">
-                        Enter Message:
-                        <input
-                            id='message'
-                            type='text'
-                            value={message}
-                            onChange={(e) => setMessage(e.target.value)}
-                        />
-                    </label>
-                </form>
-                <button onClick={() => {
-                    channelId && sendJsonMessage({
-                        type: "message",
-                        message,
-                    })
+                })
+                }
+                </List>
+                <Box ref={messageEndRef}/>
+            </Box>
+            <Box sx={{
+                    position: 'sticky',
+                    width: '100%',
+                    bottom: 0,
+                    display: 'flex',
+                    justifyContent: 'space-around',
+                    bgcolor: theme.palette.background.default,
+                    padding: {sm: 1.5, xs: 1},
+                    gap: {sm:2 , xs: 1},
                 }}>
-                    Send
-                </button>
+                    <TextField 
+                        label="Message"
+                        id='message'
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                        multiline
+                        minRows={1}
+                        maxRows={4}
+                        sx={{
+                            bgcolor: theme.palette.background.default,
+                            width: "90%",
+                            height: "inherit",
+                        }}
+                        InputProps={{
+                            style:{
+                                borderRadius: "30px",
+                                
+                            }
+                        }}
+                    />
+                    <Button 
+                        sx={{
+                            height: 'inherit',
+                            borderRadius: "30px",
+                        }}
+                        variant="outlined"
+                        color='success'
+                        endIcon={!isSmall && <SendIcon/>}
+                        onClick={() => {
+                            (channelId && message != '') && sendJsonMessage({
+                                type: "message",
+                                message,
+                            })
+                            setMessage('')
+                        }}
+                    >
+                        Send
+                    </Button>
             </Box>
         </> :
         <Box sx={{
@@ -233,7 +352,7 @@ const MessageInterface = (props) => {
                 </Typography>
             </Box>
         </Box>}
-        </>
+        </Box>
     )
 }
 

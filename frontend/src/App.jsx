@@ -2,9 +2,14 @@ import {createBrowserRouter, Route, RouterProvider, createRoutesFromElements} fr
 import React from "react";
 import Home from "./pages/Home";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { CssBaseline } from "@mui/material";
 import Theme from "./theme/Theme";
 import Main from "./pages/templates/Main";
 import Server from "./pages/Server";
+import Login from "./pages/Login";
+import { AuthContextProvider } from "./context/AuthContext";
+import TestLogin from "./pages/TestLogin";
+import ProtectedRoute from "./services/ProtectedRoute";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -22,6 +27,18 @@ const router = createBrowserRouter(
       <Route 
         path="/server/:serverId/:channelId?"
         element={<Server/>}
+      />
+      <Route
+        path="/login"
+        element={<Login/>}
+      />
+      <Route
+        path="/test"
+        element={
+          <ProtectedRoute>
+            <TestLogin/>
+          </ProtectedRoute>
+        }
       />
     </Route>
   )
@@ -50,11 +67,14 @@ function App() {
   }, [mode])
 
     return (
+      <AuthContextProvider>
       <ThemeContext.Provider value={{toggleMode}}>
         <ThemeProvider theme={modifiedTheme}>
+        <CssBaseline enableColorScheme />
           <RouterProvider router={router}/>
         </ThemeProvider>
       </ThemeContext.Provider>
+      </AuthContextProvider>
     )
 }
 

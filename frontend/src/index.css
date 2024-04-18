@@ -7,3 +7,5 @@ body {
     padding: 0;
     font-family: "IBM Plex Sans", sans-serif;
 }
+
+input:-webkit-autofill {transition: all 0s 500000s;}

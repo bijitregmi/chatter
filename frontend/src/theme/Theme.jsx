@@ -31,7 +31,7 @@ const Theme = () => {
                     }
                 }
             }
-        }
+        },
     })
     theme = responsiveFontSizes(theme)
   return theme;
