@@ -44,8 +44,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -152,9 +152,8 @@ SPECTACULAR_SETTINGS = {
 }
 
 # Cors settings
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-]
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_ORIGINS = True
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
@@ -164,5 +163,8 @@ CHANNEL_LAYERS = {
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(seconds=5),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ACCESS_TOKEN_NAME": "access_token",
+    "REFRESH_TOKEN_NAME": "refresh_token",
+    "JWT_COOKIE_SAMESITE": "Lax",
 }
