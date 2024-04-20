@@ -1,3 +1,7 @@
+from account.serializer import (
+    CustomTokenObtainPairSerializer,
+    CustomTokenRefreshSerializer,
+)
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
@@ -46,8 +50,17 @@ class JWTSetCookieMixin:
                 )
             }
 
+        if response.data.get("access"):
+            del response.data["access"]
+        if response.data.get("refresh"):
+            del response.data["refresh"]
+
         return super().finalize_response(request, response, *args, **kwargs)
 
 
 class JWTCookieTokenObtainPairView(JWTSetCookieMixin, TokenObtainPairView):
-    pass
+    serializer_class = CustomTokenObtainPairSerializer
+
+
+class JWTCookieTokenObtainRefreshView(JWTSetCookieMixin, TokenRefreshView):
+    serializer_class = CustomTokenRefreshSerializer
