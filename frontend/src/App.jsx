@@ -26,7 +26,11 @@ const router = createBrowserRouter(
       </Route>
       <Route 
         path="/server/:serverId/:channelId?"
-        element={<Server/>}
+        element={
+          <ProtectedRoute>
+            <Server/>
+          </ProtectedRoute>
+        }
       />
       <Route
         path="/login"

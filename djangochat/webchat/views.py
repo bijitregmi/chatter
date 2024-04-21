@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from .models import Conversation, Message
@@ -10,6 +11,7 @@ from .serializer import MessageSerializer
 
 
 class MessageViewSet(viewsets.ViewSet):
+
     @message_list_docs
     def list(self, request):
         channel_id = request.query_params.get("channel_id")

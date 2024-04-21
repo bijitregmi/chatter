@@ -7,10 +7,13 @@ import { useTheme } from '@mui/material/styles'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import SendIcon from '@mui/icons-material/Send'
 import { format, parseISO } from 'date-fns'
+import userAuthService from '../../services/AuthService'
+import { useNavigate } from 'react-router-dom'
 
 const MessageInterface = (props) => {
 
     const theme = useTheme()
+    const { refreshAccessToken, logout } = userAuthService()
     const [ message, setMessage ] = React.useState('')
     const [ newMessage, setNewMessage ] = React.useState([])
     const { serverId, channelId } = useParams()
@@ -31,6 +34,9 @@ const MessageInterface = (props) => {
     const scrollToBottom = () => {
         messageEndRef.current?.scrollIntoView({ behaviour: "smooth"})
     }
+    const maxConnectionAttempts = 4
+    const [ connectionAttempts, setConnectionAttempts ] = React.useState(0)
+    const navigate = useNavigate()
 
     React.useEffect(() => {
         if (!isSmall) {
@@ -131,8 +137,17 @@ const MessageInterface = (props) => {
                 console.log(e)
             }
         },
-        onClose: () => {
+        onClose: (event) => {
+            if (event.code == 4001) {
+                console.log("Authendtication error")
+                refreshAccessToken().catch((error) => {
+                    if (error.response && error.response.status === 401) {
+                        logout()
+                    }
+                })
+            }
             console.log("Closed")
+            setConnectionAttempts(prevAttempt => prevAttempt + 1)
         },
         onError: () => {
             console.log("Error")
@@ -140,7 +155,17 @@ const MessageInterface = (props) => {
         onMessage: (msg) => {
             const data = JSON.parse(msg.data)
             setNewMessage((prevMessage) => [...prevMessage, data.new_message]) 
-        }
+        },
+        shouldReconnect: (closeEvent) => {
+            if (closeEvent.code === 4001 && connectionAttempts > maxConnectionAttempts) {
+                setConnectionAttempts(0)
+                logout()
+                navigate("/")
+                return false
+            }
+            return true
+        },
+        reconnectInterval: 1000,
     })
 
 

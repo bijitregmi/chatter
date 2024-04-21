@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../config";
 import { useAuthServiceContext } from "../context/AuthContext";
 
@@ -7,7 +6,6 @@ const API_BASE_URL = BASE_URL
 
 const useAxiosInterceptor = () => {
     const jwtAxios = axios.create({ baseURL: API_BASE_URL })
-    const navigate = useNavigate()
     const { logout } = useAuthServiceContext()
 
     jwtAxios.interceptors.response.use(
@@ -26,11 +24,10 @@ const useAxiosInterceptor = () => {
                 }
                 catch (e) {
                     logout()
-                    navigate('/login')
                     throw e
                 }
             }
-            throw error
+            return error
         }
     )
 
