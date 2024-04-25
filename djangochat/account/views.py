@@ -3,10 +3,13 @@ from account.serializer import (
     CustomTokenRefreshSerializer,
 )
 from django.conf import settings
+from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets
+from rest_framework import status, viewsets
+from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from .models import Account
@@ -15,6 +18,27 @@ from .serializer import AccountSerializer
 
 
 # Create your views here.
+class RegisterView(APIView):
+    def post(self, request):
+        forbidden_usernames = ["admin", "root", "superuser"]
+        username = request.data.get("username")
+        password = request.data.get("password")
+        if username in forbidden_usernames:
+            raise ValidationError(detail="Username not allowed")
+        try:
+            user = Account.objects.create_user(username=username, password=password)
+            user.save()
+            return Response(
+                {"detail: User successfully saved"},
+                status=status.HTTP_201_CREATED,
+            )
+        except IntegrityError:
+            return Response(
+                {"error: Username already exists"},
+                status=status.HTTP_409_CONFLICT,
+            )
+
+
 class AccountViewSet(viewsets.ViewSet):
 
     permission_classes = [IsAuthenticated]
@@ -25,6 +49,16 @@ class AccountViewSet(viewsets.ViewSet):
         user = get_object_or_404(Account, id=user_id)
         serializer = AccountSerializer(user)
         return Response(serializer.data)
+
+
+class LogoutApiView(APIView):
+    def get(self, request):
+        response = Response("Successfully logged out")
+        access_token = settings.SIMPLE_JWT["ACCESS_TOKEN_NAME"]
+        refresh_token = settings.SIMPLE_JWT["REFRESH_TOKEN_NAME"]
+        response.delete_cookie(access_token)
+        response.delete_cookie(refresh_token)
+        return response
 
 
 class JWTSetCookieMixin:

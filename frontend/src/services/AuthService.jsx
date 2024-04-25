@@ -1,16 +1,17 @@
 import axios from "axios"
 import React from "react"
 import { BASE_URL } from "../config"
+import { useNavigate } from "react-router-dom"
 
 const userAuthService = () => {
 
     const [ isLoggedIn, setIsLoggedIn ] = React.useState(localStorage.getItem("isLoggedIn") === "true")
+    const navigate = useNavigate()
 
     const getUserDetails = async() => {
         try {
             const userId = localStorage.getItem("user_id")
             const response = await axios.get(`http://127.0.0.1:8000/api/account/?user_id=${userId}`, {withCredentials:true})
-            console.log(response.data)
             const username = response.data.username
             localStorage.setItem('username', username)
         }
@@ -23,16 +24,6 @@ const userAuthService = () => {
         }
     }
 
-    // const getUserIdFromToken = (token) => {
-    //     const tokenParts = token.split('.')
-    //     const encodedPayload = tokenParts[1]
-    //     const decodedPayload = atob(encodedPayload)
-    //     const payLoad = JSON.parse(decodedPayload)
-    //     const userId = payLoad.user_id
-
-    //     return userId
-    // }
-
     const login = async (username, password) => {
         try {
             const response = await axios.post(
@@ -43,14 +34,14 @@ const userAuthService = () => {
                 },
                 {withCredentials:true}
             )
-            console.log(response.data)
             localStorage.setItem('isLoggedIn', "true")
             localStorage.setItem("user_id", response.data.user_id)
             setIsLoggedIn(true)
             getUserDetails()
+            return response.status
         }
         catch (e) {
-            return e.response
+            return e.response.status
         }
     }
 
@@ -63,14 +54,39 @@ const userAuthService = () => {
         }
     }
 
-    const logout = () => {
+    const logout = async () => {
         localStorage.setItem("isLoggedIn", "false")
         localStorage.removeItem("username")
         localStorage.removeItem("user_id")
         setIsLoggedIn(false)
+        try {
+            const response = await axios.get(`${BASE_URL}/logout/`, {withCredentials:true})
+            console.log(response.data)
+        }
+        catch (e) {
+            throw e
+        }
+        navigate("/login")
     }
 
-    return { login, isLoggedIn, logout, setIsLoggedIn, refreshAccessToken}
+    const register = async (username, password) => {
+        try {
+            const response = await axios.post(
+                'http://127.0.0.1:8000/api/register/',
+                {
+                    username,
+                    password,
+                },
+                {withCredentials:true}
+            )
+            return response.status
+        }
+        catch (e) {
+            return e.response.status
+        }
+    }
+
+    return { login, isLoggedIn, logout, setIsLoggedIn, refreshAccessToken, register }
 }
 
 export default userAuthService

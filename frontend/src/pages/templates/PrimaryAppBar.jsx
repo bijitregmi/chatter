@@ -25,7 +25,6 @@ const PrimaryAppBar = ({children}) => {
     <AppBar color='inherit' position='fixed' sx={{
       height: theme.primaryAppBar.height,
       zIndex: theme.zIndex.drawer + 2,
-      transition: '0.2s',
       boxShadow: "none",
       borderBottom: `1px solid ${theme.palette.divider}`,
       bgcolor: theme.palette.mode == "dark" ? '#242424' : "#F7F7F7",

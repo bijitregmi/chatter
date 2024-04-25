@@ -8,7 +8,6 @@ import MoreVertIcon from '@mui/icons-material/MoreVert'
 import SendIcon from '@mui/icons-material/Send'
 import { format, parseISO } from 'date-fns'
 import userAuthService from '../../services/AuthService'
-import { useNavigate } from 'react-router-dom'
 
 const MessageInterface = (props) => {
 
@@ -36,7 +35,8 @@ const MessageInterface = (props) => {
     }
     const maxConnectionAttempts = 4
     const [ connectionAttempts, setConnectionAttempts ] = React.useState(0)
-    const navigate = useNavigate()
+    const user_id = localStorage.getItem("user_id")
+
 
     React.useEffect(() => {
         if (!isSmall) {
@@ -130,7 +130,6 @@ const MessageInterface = (props) => {
             try {
                 console.log("Connected")
                 const data = await fetchData()
-                console.log(data)
                 setNewMessage(Array.isArray(data) ? data : [])
             }
             catch (e) {
@@ -160,7 +159,6 @@ const MessageInterface = (props) => {
             if (closeEvent.code === 4001 && connectionAttempts > maxConnectionAttempts) {
                 setConnectionAttempts(0)
                 logout()
-                navigate("/")
                 return false
             }
             return true
@@ -226,7 +224,10 @@ const MessageInterface = (props) => {
                         <ListItem 
                             key={message.id}
                             sx={{
-                                gap: 2
+                                gap: 2,
+                                flexDirection: message.sender.id === Number(user_id) ? "row-reverse" : "row",
+                                textAlign: message.sender.id === Number(user_id) ? "right" : "left",
+                                maxWidth: "100%"
                             }}
                         >
                             <ListItemAvatar>
@@ -234,7 +235,7 @@ const MessageInterface = (props) => {
                             </ListItemAvatar>
                             <ListItemText
                                 sx={{
-                                    display: 'grid'
+                                    display: 'grid',
                                 }}
                                 primary={
                                 <Typography
@@ -247,7 +248,8 @@ const MessageInterface = (props) => {
                                         alignItems: 'center',
                                         fontWeight: 400,
                                         gap: '1vw',
-                                        textOverflow: 'ellipsis'
+                                        textOverflow: 'ellipsis',
+                                        flexDirection: message.sender.id === Number(user_id) ? "row-reverse" : "row",
                                     }}
                                 >
                                     <Typography sx={{

@@ -27,14 +27,14 @@ const PrimaryDrawer = ({children}) => {
         sx={{
             width: isOpen ? `${theme.primaryDrawer.width}px` : `${theme.primaryDrawer.closedWidth}px`,
             mt:`${theme.primaryAppBar.minHeight}px`,
-            transition: '0.2s',
+            transition: '0.05s',
         }}
         PaperProps={{
             sx:{
                 mt:`${theme.primaryAppBar.minHeight}px`,
                 height:`calc(100dvh - ${theme.primaryAppBar.height}px)`,
                 width: isOpen ? `${theme.primaryDrawer.width}px` : `${theme.primaryDrawer.closedWidth}px`,
-                transition: '0.2s',
+                transition: '0.05s',
             }
         }}
         >

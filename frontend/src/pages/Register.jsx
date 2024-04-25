@@ -3,28 +3,31 @@ import { useNavigate } from "react-router-dom"
 import React from 'react'
 import { Box, Button, Container, TextField, Typography } from "@mui/material"
 import { useAuthServiceContext } from "../context/AuthContext"
-import { loginSchema } from "../schema/formValidation"
+import { registerScehma } from "../schema/formValidation"
 
-const Login = () => {
+const Register = () => {
 
     const navigate = useNavigate()
-    const { login } = useAuthServiceContext()
+    const { register } = useAuthServiceContext()
 
     const formik = useFormik({
         initialValues: {
             username: "",
             password: "",
+            confirm: "",
         },
-        validationSchema: loginSchema,
+        validationSchema: registerScehma,
         onSubmit: async (values) => {
             const { username, password } = values
-            const res = await login(username, password)
-            if (res === 401){
-                formik.errors.username = "Invalid credentials"
-                formik.errors.password = "Invalid credentials"
+            const res = await register(username, password)
+            if (res === 409){
+                formik.errors.username = "Username already exists"
+            }
+            else if (res === 400){
+                formik.errors.username = "Username is not allowed"
             }
             else {
-                navigate("/")
+                navigate("/login")
             }
         },
     })
@@ -42,7 +45,7 @@ const Login = () => {
                 fontWeight={400}
                 textAlign="center"
             >
-                Login
+                Register
             </Typography>
             <Box component="form" onSubmit={formik.handleSubmit} sx={{
                 mt: 2,
@@ -79,6 +82,18 @@ const Login = () => {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                 />
+                <TextField
+                    error={formik.touched.confirm && Boolean(formik.errors.confirm)}
+                    helperText={formik.touched.confirm && formik.errors.confirm}
+                    fullWidth
+                    type="password"
+                    label="Confirm Password"
+                    id="confirm"
+                    name="confirm"
+                    value={formik.values.confirm}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                />
                 <Button
                     variant="outlined"
                     type="submit"
@@ -96,4 +111,4 @@ const Login = () => {
     )
 }
 
-export default Login
+export default Register
