@@ -12,9 +12,7 @@ from .serializers import CategorySerializer, ServerSerializers
 
 
 class ServerMembershipViewset(viewsets.ViewSet):
-    permission_classes = [
-        IsAuthenticated,
-    ]
+    permission_classes = [IsAuthenticated]
 
     def create(self, request, server_id):
         server = get_object_or_404(Server, id=server_id)
@@ -32,6 +30,12 @@ class ServerMembershipViewset(viewsets.ViewSet):
     def destroy(self, request, server_id, pk=None):
         server = get_object_or_404(Server, id=server_id)
         user = request.user
+
+        if user == server.owner:
+            return Response(
+                {"Error: Owner cannot be removed"}, status=status.HTTP_400_BAD_REQUEST
+            )
+
         if user in server.member.all():
             server.member.remove(user)
             return Response(
@@ -42,17 +46,14 @@ class ServerMembershipViewset(viewsets.ViewSet):
             {"Error: User is not a member"}, status=status.HTTP_404_NOT_FOUND
         )
 
-    @action(
-        detail=False,
-        methods=["GET"],
-    )
-    def is_member(self, request, server_id):
+    @action(detail=False)
+    def is_member(self, request, server_id=None):
         server = get_object_or_404(Server, id=server_id)
         user = request.user
 
         is_member = server.member.filter(id=user.id).exists()
 
-        return Response({"is_member": {is_member}})
+        return Response({"is_member": is_member})
 
 
 class CategoryListViewSet(viewsets.ViewSet):

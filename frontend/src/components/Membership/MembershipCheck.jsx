@@ -9,7 +9,7 @@ const MembershipCheck = ({ children }) => {
     React.useEffect(() => {
         const checkMembership = async () => {
             try {
-                await memberCheck(serverId)
+                await memberCheck(Number(serverId))
             }
             catch (e) {
                 console.log(e)

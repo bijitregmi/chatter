@@ -14,7 +14,7 @@ const useAxiosInterceptor = () => {
         },
         async (error) => {
             const originalRequest = error.config;
-            if (error.response?.status === 403 || 401) {
+            if (error.response?.status === 403 || error.response.status === 401) {
                 axios.defaults.withCredentials = true
                 try {
                     const refreshResponse = await axios.post("http://127.0.0.1:8000/api/token/refresh/")
@@ -24,10 +24,10 @@ const useAxiosInterceptor = () => {
                 }
                 catch (e) {
                     logout()
-                    throw e
+                    return Promise.reject(e)
                 }
             }
-            return error
+            return Promise.reject(error)
         }
     )
 

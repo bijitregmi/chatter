@@ -1,5 +1,5 @@
 import React from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useNavigate } from 'react-router-dom'
 import useWebSocket from 'react-use-websocket'
 import useCrud from '../../hooks/useCrud'
 import { AppBar, Box, IconButton, ListItem, Menu, MenuItem, Toolbar, Typography, useMediaQuery, List, ListItemAvatar, Avatar, ListItemText, TextField, Button} from '@mui/material'
@@ -8,6 +8,8 @@ import MoreVertIcon from '@mui/icons-material/MoreVert'
 import SendIcon from '@mui/icons-material/Send'
 import { format, parseISO } from 'date-fns'
 import userAuthService from '../../services/AuthService'
+import { useMemberContext } from '../../context/MemberContext'
+import JoinServerButton from '../Membership/JoinServerButton'
 
 const MessageInterface = (props) => {
 
@@ -36,6 +38,7 @@ const MessageInterface = (props) => {
     const maxConnectionAttempts = 4
     const [ connectionAttempts, setConnectionAttempts ] = React.useState(0)
     const user_id = localStorage.getItem("user_id")
+    const { isMember } = useMemberContext()
 
 
     React.useEffect(() => {
@@ -198,18 +201,24 @@ const MessageInterface = (props) => {
                         {channelName}
                     </Typography>
                     <Box sx={{
-                        display: {xs: "block", sm: "none"}
-                    }}
-                    
-                    >
-                        <IconButton color='inherit' edge="end" onClick={handleClick}>
-                            <MoreVertIcon/>
-                        </IconButton>
-                        {menu}
+                        display: "flex",
+                        alignItems: 'center'
+                    }}>
+                        <JoinServerButton/>
+                        <Box sx={{
+                            display: {xs: "block", sm: "none"}
+                        }}
+                        
+                        >
+                            <IconButton color='inherit' edge="end" onClick={handleClick}>
+                                <MoreVertIcon/>
+                            </IconButton>
+                            {menu}
+                        </Box>
                     </Box>
                 </Toolbar>
             </AppBar>
-        {channelId ?
+        {(channelId && isMember)?
         <>
             <Box sx={{
                 overflow: 'hidden',
@@ -273,6 +282,8 @@ const MessageInterface = (props) => {
                                             overflow: 'visible',
                                             whiteSpace: 'normal',
                                             textOverflow: 'clip',
+                                            wordWrap: 'break-word',
+                                            wordBreak: 'break-all',
                                         }}
                                         sx={{
                                             display: 'inline',

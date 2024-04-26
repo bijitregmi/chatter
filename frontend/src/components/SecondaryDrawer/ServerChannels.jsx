@@ -2,11 +2,13 @@ import React from 'react'
 import { Box, List, ListItem, ListItemButton, ListItemText, Typography} from '@mui/material'
 import { Link, useParams } from 'react-router-dom'
 import { useTheme } from '@mui/material/styles'
+import { useMemberContext } from '../../context/MemberContext'
 
 const ServerChannels = (props) => {
 
     const theme = useTheme()
     const { serverId, channelId } = useParams()
+    const { isMember } = useMemberContext()
 
     return (
         <>
@@ -38,7 +40,7 @@ const ServerChannels = (props) => {
                                 }}
                             >
                                 <Link 
-                                    to={`/server/${serverId}/${item.id}`}
+                                    to={isMember ? `/server/${serverId}/${item.id}`: `/server/${serverId}`}
                                     style={{
                                         textDecoration: "none",
                                         color: "inherit",

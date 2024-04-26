@@ -23,8 +23,9 @@ router.register("api/category/select", CategoryListViewSet)
 router.register("api/messages", MessageViewSet, basename="messages")
 router.register("api/account", AccountViewSet, basename="user")
 router.register(
-    "api/member/<str:server_id>", ServerMembershipViewset, basename="member"
+    r"api/member/(?P<server_id>\d+)", ServerMembershipViewset, basename="member"
 )
+
 
 # Admin page and API schema routes
 urlpatterns = [
@@ -55,7 +56,7 @@ urlpatterns = [
 
 # Websocket route
 websocket_urlpatterns = [
-    path("<str:sreverId>/<str:channelId>", WebChatConsumer.as_asgi()),
+    path("<str:serverId>/<str:channelId>", WebChatConsumer.as_asgi()),
 ]
 
 # Static and media files routes
