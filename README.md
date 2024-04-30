@@ -4,7 +4,7 @@ Chatter is a group chatting web application. Share you interests with people aro
 
 ## Installation
 
-Clone the git repository to you machine. Must have [Node](https://nodejs.org/en) and [Python](https://www.python.org/) installed.
+Clone the git repository to a folder in your computer. Must have [Node](https://nodejs.org/en) and [Python](https://www.python.org/) installed.
 
 ```bash
 git clone {REPOSITORY_URL}
