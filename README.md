@@ -83,8 +83,10 @@ The frontend is built using the build tool [Vite](https://vitejs.dev/) in ReactJ
 
 ## Usage
 
-Login into Chatter. Select any server you like by clicking on the banner or icon in the sidebar. Join any server to get access to chat features in that server. Select a channel and begin chatting! 
+Login then select a server
+![Homepage](frontend/public/Homepage2.png)
 
+Join server by clicking the join button on the top right. Select a channel and begin chatting!
 ![Messaging Interface](frontend/public/Screenshot1.png)
 
 ## License
