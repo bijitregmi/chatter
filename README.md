@@ -129,6 +129,17 @@ Mobile
 
 ![Mobile view 2](frontend/public/Mobile2.png)
 
+## Acknowledgement
+
+- [React](https://react.dev/) - Documentation for most frontend implementations
+- [MUI](https://mui.com/material-ui/getting-started/) - Material UI documentation for components
+- [Stack overflow](https://stackoverflow.com/) - Answers for bugs and implementation ideas 
+- [Django](https://www.djangoproject.com/) - Documentation for Django
+- [DRF](https://www.django-rest-framework.org/) - Django rest framework documentation
+- [Django Channels](https://channels.readthedocs.io/en/latest/) - Channels and channel layers documentation
+- [Simple JWT](https://django-rest-framework-simplejwt.readthedocs.io/en/latest/) - Documentation for simple JWT
+- [React router](https://reactrouter.com/en/main) - Help with routing frontend
+- [React websockets](https://www.npmjs.com/package/react-use-websocket) - React websocket documentation
 
 ## License
 
