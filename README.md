@@ -84,10 +84,51 @@ The frontend is built using the build tool [Vite](https://vitejs.dev/) in ReactJ
 ## Usage
 
 Login then select a server
+
 ![Homepage](frontend/public/Homepage2.png)
 
 Join server by clicking the join button on the top right. Select a channel and begin chatting!
+
 ![Messaging Interface](frontend/public/Screenshot1.png)
+
+## Links
+
+Github - [https://github.com/bijitregmi/chatter](https://github.com/bijitregmi/chatter)
+
+## Screenshots
+
+Homepage
+
+![Homepage](frontend/public/Homepage2.png)
+
+Server
+
+![Server](frontend/public/Server.png)
+
+Channel
+
+![Channel](frontend/public/Channel.png)
+
+Theme
+
+![Light Theme](frontend/public/Theme.png)
+
+![Light Theme 2](frontend/public//Theme2.png)
+
+Login
+
+![Login](frontend/public/Login.png)
+
+Register
+
+![Register](frontend/public/Register.png)
+
+Mobile
+
+![Mobile view](frontend/public/Mobile3.png)
+
+![Mobile view 2](frontend/public/Mobile2.png)
+
 
 ## License
 
