@@ -1,6 +1,6 @@
 # Chatter
 
-Chatter is a group chatting web application. Share you interests with people around the world and join servers to chat with people with similar interests.
+Chatter is a group chatting web application. Share you interests with people around the world and join servers to chat with people who share similar interests.
 
 ## Installation
 
@@ -59,15 +59,13 @@ The Django backend contains 3 apps :
 
 2. Server - This app handles most of the API requests from the frontend using DRF(Django Rest Framework). It does most of the database lookups and even filters data based on query parameters in the request URL.
 
-3. Webchat - This app handles all websocket requests and makes real time chatting possible using channels and channel layers. It also includes custom middleware for authentication of web sockets. The consumer file creates a long standing connection between the server and the client to enable instantaneous chatting. Most channel layer functions converted to synchronous functions for easier handling. It also provides message data to the frontend.
-
-4. Static
+3. Webchat - This app handles all websocket requests and makes real time chatting possible using channels and channel layers. It also includes custom middleware for authentication of web sockets. The consumer file creates a long standing connection between the server and the client in order to enable instantaneous chatting. Most channel layer functions are converted to synchronous functions for easier handling. It also provides message data to the frontend.
 
 The frontend is built using the build tool [Vite](https://vitejs.dev/) in ReactJS. Most components are imported from MUI(Material U.I.) a react component library.
 
 1. Public - Contains screenshots for the project.
 
-2. Src - Most of the frontend U.I. present here.
+2. Src - Most of the frontend U.I. is present here.
     - assets - Contains favicon.
     - components - Contains all the components for the page layouts.
     - context - Auth and Membership context for the frontend.
