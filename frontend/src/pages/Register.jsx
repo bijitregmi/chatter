@@ -4,6 +4,7 @@ import React from 'react'
 import { Box, Button, Container, TextField, Typography } from "@mui/material"
 import { useAuthServiceContext } from "../context/AuthContext"
 import { registerScehma } from "../schema/formValidation"
+import PrimaryAppBar from "./templates/PrimaryAppBar"
 
 const Register = () => {
 
@@ -33,11 +34,13 @@ const Register = () => {
     })
 
     return (
+        <>
+        <PrimaryAppBar/>
         <Container component="main" maxWidth="xs">
             <Box sx={{
                 display: "flex",
                 flexDirection: "column",
-                marginTop: 4
+                marginTop: 8
 
             }}>
             <Typography
@@ -108,6 +111,7 @@ const Register = () => {
             </Box>
         </Box>
         </Container>
+        </>
     )
 }
 

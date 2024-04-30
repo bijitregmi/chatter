@@ -4,6 +4,7 @@ import { useTheme } from '@mui/material'
 import { Link } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import AccountButton from '../../components/PrimaryAppBar/AccountButton'
+import { useAuthServiceContext } from '../../context/AuthContext'
 
 
 const PrimaryAppBar = ({children}) => {
@@ -13,13 +14,13 @@ const PrimaryAppBar = ({children}) => {
   const toggleSideMenu = React.useCallback(() => {
     return setSideMenuOpen(prevSideMenuOpen => !prevSideMenuOpen)
   }, [])
-
+  const { isLoggedIn, logout } = useAuthServiceContext()
 
   React.useEffect(() => {
     if (sideMenuOpen && !isScreenSizeSmall) {
       toggleSideMenu();
     }
-  }, [isScreenSizeSmall])
+  }, [isScreenSizeSmall, sideMenuOpen, toggleSideMenu])
 
   return (
     <AppBar color='inherit' position='fixed' sx={{
@@ -67,7 +68,29 @@ const PrimaryAppBar = ({children}) => {
             </Typography>
           </Link>
           </Box>
+          <Box sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 2,
+          }}>
+          
+          {isLoggedIn ? 
+          <Typography noWrap color="inherit" onClick={() => logout()} sx={{
+            ":hover": {
+              cursor: "pointer"
+            }
+          }}>
+            Logout
+          </Typography>
+          :
+          <Link href="/login" underline="none" color="inherit">
+              <Typography noWrap>
+                Login
+              </Typography>
+          </Link> 
+          }
           <AccountButton/>
+          </Box>
         </Toolbar>
     </AppBar>
   )

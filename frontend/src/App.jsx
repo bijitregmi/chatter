@@ -44,7 +44,7 @@ function App() {
         <ThemeProvider theme={modifiedTheme}>
         <CssBaseline enableColorScheme />
         <Routes>
-          <Route 
+          <Route
             path="/"
             element={<Home/>}
           >
@@ -69,14 +69,6 @@ function App() {
           <Route
             path="/login"
             element={<Login/>}
-          />
-          <Route
-            path="/test"
-            element={
-              <ProtectedRoute>
-                <TestLogin/>
-              </ProtectedRoute>
-            }
           />
           <Route
             path="/register"

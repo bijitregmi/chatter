@@ -1,15 +1,21 @@
 import { useFormik } from "formik"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import React from 'react'
 import { Box, Button, Container, TextField, Typography } from "@mui/material"
 import { useAuthServiceContext } from "../context/AuthContext"
 import { loginSchema } from "../schema/formValidation"
+import PrimaryAppBar from "./templates/PrimaryAppBar"
 
 const Login = () => {
 
     const navigate = useNavigate()
-    const { login } = useAuthServiceContext()
+    const { login, isLoggedIn } = useAuthServiceContext()
 
+    React.useEffect(() => {
+        if (isLoggedIn) {
+            navigate('/')
+        }
+        }, [])
     const formik = useFormik({
         initialValues: {
             username: "",
@@ -30,11 +36,13 @@ const Login = () => {
     })
 
     return (
+        <>
+        <PrimaryAppBar/>
         <Container component="main" maxWidth="xs">
             <Box sx={{
                 display: "flex",
                 flexDirection: "column",
-                marginTop: 4
+                marginTop: 8
 
             }}>
             <Typography
@@ -79,6 +87,9 @@ const Login = () => {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                 />
+                <Typography>
+                    Don't have an account? <Link to="/register">Sign up</Link>
+                </Typography>
                 <Button
                     variant="outlined"
                     type="submit"
@@ -93,6 +104,7 @@ const Login = () => {
             </Box>
         </Box>
         </Container>
+        </>
     )
 }
 

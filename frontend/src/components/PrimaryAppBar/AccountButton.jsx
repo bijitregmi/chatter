@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, IconButton, Menu, MenuItem, Switch, Typography } from "@mui/material"
+import { Box, IconButton, Menu, MenuItem, Switch } from "@mui/material"
 import { AccountCircle } from '@mui/icons-material'
 import { ThemeContext } from '../../App'
 import { useTheme } from '@mui/material/styles'
