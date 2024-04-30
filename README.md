@@ -70,7 +70,7 @@ The frontend is built using the build tool [Vite](https://vitejs.dev/) in ReactJ
     - components - Contains all the components for the page layouts.
     - context - Auth and Membership context for the frontend.
     - helpers - An axios interceptor that automatically refreshes an access token if it expires.
-    - hooks - Contains a simple hook that performs basic CRUD operations.
+    - hooks - Contains a simple hook that performs basic CRUD operations with the backend.
     - pages - Contains page layouts and full pages.
     - schema - Uses yup to provide a schema for from validation.
     - services - Provides Auth, Membership and Route protection services.
